@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Install additional modules for export
-        run: npm install --save-dev playwright-chromium`
+        run: npm install --save-dev playwright-chromium
 
       - name: Export
         run: npm run export
