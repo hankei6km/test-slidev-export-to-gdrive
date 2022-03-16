@@ -1,0 +1,62 @@
+name: test
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  oidc:
+    environment: send
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 16.xx
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+
+      - name: Install modules
+        run: npm ci
+
+      - name: Install additional modules for export
+        run: npm install --save-dev playwright-chromium`
+
+      - name: Export
+        run: npm run export
+
+      - name: Install gdrive command
+        run: curl -sL https://github.com/prasmussen/gdrive/releases/download/2.1.1/gdrive_2.1.1_linux_386.tar.gz | tar -zxvf -
+
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v0"
+        with:
+          # 外部から切り替えできるように secret にしてある.
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: Send slides.pdf to Google drive
+        run: bash scripts/send.sh
+        env:
+          # 外部から切り替えできるように secret にしてある.
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          PARENT_ID: ${{ secrets.PARENT_ID }}
+          DEST_FILE_NAME: ${{ secrets.DEST_FILE_NAME }}
+          SRC_FILE_NAME: ${{ secrets.SRC_FILE_NAME }}
