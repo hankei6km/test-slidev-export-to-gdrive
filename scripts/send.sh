@@ -5,6 +5,7 @@ SA="$(basename "${GOOGLE_APPLICATION_CREDENTIALS}")"
 GDRIVE="./gdrive"
 
 echo "${SA}"
+echo "${GDRIVE}" --service-account "${SA}" -c .
 
 FILE_ID="$("${GDRIVE}" --service-account "${SA}" -c . \
   list -q "'""${PARENT_ID}""' in parents" | \
