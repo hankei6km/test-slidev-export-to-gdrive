@@ -4,6 +4,8 @@ set -e
 SA="$(basename "${GOOGLE_APPLICATION_CREDENTIALS}")"
 GDRIVE="./gdrive"
 
+echo "${SA}"
+
 FILE_ID="$("${GDRIVE}" --service-account "${SA}" -c . \
   list -q "'""${PARENT_ID}""' in parents" | \
     sed "1d" | grep "${DEST_FILE_NAME}" | head -n 1 | cut -d" " -f1)"
