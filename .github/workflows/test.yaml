@@ -36,13 +36,10 @@ jobs:
         run: npm ci
 
       - name: Install additional modules for export
-        run: npm install --save-dev playwright-chromium
+        run: npm install --save-dev playwright-chromium guratan
 
       - name: Export
         run: npm run export
-
-      - name: Install gdrive command
-        run: curl -sL https://github.com/prasmussen/gdrive/releases/download/2.1.1/gdrive_2.1.1_linux_386.tar.gz | tar -zxvf -
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
@@ -53,10 +50,9 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
       - name: Send slides.pdf to Google drive
-        run: bash scripts/send.sh
+        run: npx guratan
         env:
           # 外部から切り替えできるように secret にしてある.
-          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          PARENT_ID: ${{ secrets.PARENT_ID }}
-          DEST_FILE_NAME: ${{ secrets.DEST_FILE_NAME }}
-          SRC_FILE_NAME: ${{ secrets.SRC_FILE_NAME }}
+          GURATAN_PARENT_ID: ${{ secrets.PARENT_ID }}
+          GURATAN_DEST_FILE_NAME: ${{ secrets.GURATAN_DEST_FILE_NAME }}
+          GURATAN_SRC_FILE_NAME: ${{ secrets.GURATAN_SRC_FILE_NAME }}
