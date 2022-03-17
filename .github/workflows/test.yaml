@@ -53,6 +53,6 @@ jobs:
         run: npx guratan send
         env:
           # 外部から切り替えできるように secret にしてある.
-          GURATAN_PARENT_ID: ${{ secrets.PARENT_ID }}
+          GURATAN_PARENT_ID: ${{ secrets.GURATAN_PARENT_ID }}
           GURATAN_DEST_FILE_NAME: ${{ secrets.GURATAN_DEST_FILE_NAME }}
           GURATAN_SRC_FILE_NAME: ${{ secrets.GURATAN_SRC_FILE_NAME }}
