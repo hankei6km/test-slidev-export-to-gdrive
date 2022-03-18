@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Install additional modules for export
-        run: npm install --save-dev playwright-chromium guratan
+        run: npm install --save-dev playwright-chromium
 
       - name: Export
         run: npm run export
@@ -50,9 +50,9 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
       - name: Send slides.pdf to Google drive
-        run: npx guratan send
+        uses: hankei6km/gdrive-act-send@v0.1
         env:
           # 外部から切り替えできるように secret にしてある.
-          GURATAN_PARENT_ID: ${{ secrets.GURATAN_PARENT_ID }}
-          GURATAN_DEST_FILE_NAME: ${{ secrets.GURATAN_DEST_FILE_NAME }}
-          GURATAN_SRC_FILE_NAME: ${{ secrets.GURATAN_SRC_FILE_NAME }}
+          PARENT_ID: ${{ secrets.PARENT_ID }}
+          DEST_FILE_NAME: ${{ secrets.DEST_FILE_NAME }}
+          SRC_FILE_NAME: ${{ secrets.SRC_FILE_NAME }}
