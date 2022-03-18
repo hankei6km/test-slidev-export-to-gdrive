@@ -51,8 +51,8 @@ jobs:
 
       - name: Send slides.pdf to Google drive
         uses: hankei6km/gdrive-act-send@v0.1.1
-        env:
+        with:
           # 外部から切り替えできるように secret にしてある.
-          PARENT_ID: ${{ secrets.PARENT_ID }}
-          DEST_FILE_NAME: ${{ secrets.DEST_FILE_NAME }}
-          SRC_FILE_NAME: ${{ secrets.SRC_FILE_NAME }}
+          parent-id: ${{ secrets.PARENT_ID }}
+          dest-file-name: ${{ secrets.DEST_FILE_NAME }}
+          src-file-name: ${{ secrets.SRC_FILE_NAME }}
