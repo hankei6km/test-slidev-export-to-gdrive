@@ -29,6 +29,9 @@ jobs:
           parent_id: ${{ secrets.PARENT_ID }}
           dest_file_name: ${{ secrets.DEST_FILE_NAME }}
           src_file_name: blank.pdf
+          # サービスアカウントから一般アカウントの transfer_ownership は Google の mimeType が必要.
+          dest_mime_type: application/vnd.google-apps.presentation
+          src_mime_type: application/pdf
 
       - name: Transfer Owner
         uses: hankei6km/gdrive-act-share@v0.1.1
