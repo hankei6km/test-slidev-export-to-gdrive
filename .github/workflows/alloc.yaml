@@ -23,7 +23,7 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
       - name: Send dummy file to Google drive
-        id: send
+        id: send1
         uses: hankei6km/gdrive-act-send@v0.2.0
         with:
           parent_id: ${{ secrets.PARENT_ID }}
@@ -36,6 +36,6 @@ jobs:
       - name: Share anyone
         uses: hankei6km/gdrive-act-share@v0.1.1
         with:
-          file_id: ${{ steps.send.outputs.file_id }}
+          file_id: ${{ steps.send1.outputs.file_id }}
           type: anyone
           role: reader
