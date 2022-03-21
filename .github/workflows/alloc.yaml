@@ -33,11 +33,9 @@ jobs:
           dest_mime_type: application/pdf
           src_mime_type: text/plain
 
-      - name: Transfer Owner
+      - name: Share anyone
         uses: hankei6km/gdrive-act-share@v0.1.1
         with:
           file_id: ${{ steps.send.outputs.file_id }}
-          type: user
-          role: owner
-          email_address: ${{ secrets.SHARE_EMAIL_ADDRESS }}
-          transfer_ownership: true
+          type: anyone
+          role: reader
