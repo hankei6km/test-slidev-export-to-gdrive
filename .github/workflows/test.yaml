@@ -50,7 +50,7 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
       - name: Send slides.pdf to Google drive
-        uses: hankei6km/gdrive-act-send@v0.1.1
+        uses: hankei6km/gdrive-act-send@v0.2.0
         with:
           # 外部から切り替えできるように secret にしてある.
           parent-id: ${{ secrets.PARENT_ID }}
