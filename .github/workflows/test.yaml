@@ -56,5 +56,5 @@ jobs:
           parent_id: ${{ secrets.PARENT_ID }}
           dest_file_name: ${{ secrets.DEST_FILE_NAME }}
           src_file_name: ${{ secrets.SRC_FILE_NAME }}
-          dest_mime_type: application/octet-stream
+          dest_mime_type: application/vnd.google-apps.unknown
           src_mime_type: application/pdf
