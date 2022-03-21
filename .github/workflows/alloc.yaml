@@ -22,7 +22,7 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      - name: Send blank.pdf to Google drive
+      - name: Send dummy file to Google drive
         id: send
         uses: hankei6km/gdrive-act-send@v0.2.0
         with:
