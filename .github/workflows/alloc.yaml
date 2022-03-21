@@ -37,3 +37,4 @@ jobs:
           type: user
           role: owner
           email_address: ${{ secrets.SHARE_EMAIL_ADDRESS }}
+          transfer_ownership: true
