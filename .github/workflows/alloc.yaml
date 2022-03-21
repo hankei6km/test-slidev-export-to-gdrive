@@ -30,7 +30,7 @@ jobs:
           dest_file_name: ${{ secrets.DEST_FILE_NAME }}
           src_file_name: blank.pdf
           # サービスアカウントから一般アカウントの transfer_ownership は Google の mimeType が必要.
-          dest_mime_type: application/pdf
+          dest_mime_type: application/vnd.google-apps.unknown
           src_mime_type: text/plain
 
       - name: Transfer Owner
