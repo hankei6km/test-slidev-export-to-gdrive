@@ -53,6 +53,6 @@ jobs:
         uses: hankei6km/gdrive-act-send@v0.2.0
         with:
           # 外部から切り替えできるように secret にしてある.
-          parent-id: ${{ secrets.PARENT_ID }}
-          dest-file-name: ${{ secrets.DEST_FILE_NAME }}
-          src-file-name: ${{ secrets.SRC_FILE_NAME }}
+          parent_id: ${{ secrets.PARENT_ID }}
+          dest_file_name: ${{ secrets.DEST_FILE_NAME }}
+          src_file_name: ${{ secrets.SRC_FILE_NAME }}

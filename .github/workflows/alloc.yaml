@@ -26,9 +26,9 @@ jobs:
         id: send
         uses: hankei6km/gdrive-act-send@v0.2.0
         with:
-          parent-id: ${{ secrets.PARENT_ID }}
-          dest-file-name: ${{ secrets.DEST_FILE_NAME }}
-          src-file-name: blank.pdf
+          parent_id: ${{ secrets.PARENT_ID }}
+          dest_file_name: ${{ secrets.DEST_FILE_NAME }}
+          src_file_name: blank.pdf
 
       - name: Transfer Owner
         uses: hankei6km/gdrive-act-share@v0.1.1
