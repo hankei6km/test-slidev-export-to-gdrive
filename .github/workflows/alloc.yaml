@@ -31,13 +31,13 @@ jobs:
           src_file_name: blank.pdf
           # サービスアカウントから一般アカウントの transfer_ownership は Google の mimeType が必要.
           dest_mime_type: application/vnd.google-apps.document
-          src_mime_type: application/pdf
+          src_mime_type: text/plain
 
-      #- name: Transfer Owner
-      #  uses: hankei6km/gdrive-act-share@v0.1.1
-      #  with:
-      #    file_id: ${{ steps.send.outputs.file_id }}
-      #    type: user
-      #    role: owner
-      #    email_address: ${{ secrets.SHARE_EMAIL_ADDRESS }}
-      #    transfer_ownership: true
+      - name: Transfer Owner
+        uses: hankei6km/gdrive-act-share@v0.1.1
+        with:
+          file_id: ${{ steps.send.outputs.file_id }}
+          type: user
+          role: owner
+          email_address: ${{ secrets.SHARE_EMAIL_ADDRESS }}
+          transfer_ownership: true
