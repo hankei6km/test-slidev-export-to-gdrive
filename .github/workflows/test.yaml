@@ -41,9 +41,6 @@ jobs:
       - name: Install additional modules for export
         run: npm install --save-dev playwright-chromium
 
-      - name: Export
-        run: npm run export
-
       - id: "auth"
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v0"
@@ -51,6 +48,16 @@ jobs:
           # 外部から切り替えできるように secret にしてある.
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: Recevie slides.md from Google drive
+        uses: hankei6km/gdrive-act-send@v0.3.0
+        with:
+          # 外部から切り替えできるように secret にしてある.
+          file_id: ${{ secrets.SLIDES_MD_FILE_ID }}
+          dest_file_name: slides.md
+
+      - name: Export
+        run: npm run export
 
       - name: Send slides.pdf to Google drive
         uses: hankei6km/gdrive-act-send@v0.3.0
