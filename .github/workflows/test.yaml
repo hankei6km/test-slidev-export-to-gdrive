@@ -55,6 +55,7 @@ jobs:
           # 外部から切り替えできるように secret にしてある.
           file_id: ${{ secrets.SLIDES_MD_FILE_ID }}
           dest_file_name: slides.md
+          dest_mime_type: text/plain
 
       - name: Export
         run: npm run export
