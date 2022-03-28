@@ -58,7 +58,10 @@ jobs:
           dest_mime_type: text/plain
 
       - name: Conver crlf to lf
-        run: tr -d "\n" < slides_recv.md > slides.md
+        run: tr -d "\r" < slides_recv.md > slides.md
+
+      - name: Check file format
+        run: file slides.md
 
       - name: Export
         run: npm run export
