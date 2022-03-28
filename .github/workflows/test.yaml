@@ -54,8 +54,11 @@ jobs:
         with:
           # 外部から切り替えできるように secret にしてある.
           file_id: ${{ secrets.SLIDES_MD_FILE_ID }}
-          dest_file_name: slides.md
+          dest_file_name: slides_recv.md
           dest_mime_type: text/plain
+
+      - name: Conver crlf to lf
+        run: tr -d "\n" < slides_recv.md > slides.md
 
       - name: Export
         run: npm run export
