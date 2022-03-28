@@ -60,6 +60,9 @@ jobs:
       - name: Conver crlf to lf
         run: tr -d "\r" < slides_recv.md > slides.md
 
+      - name: Remove BOM
+        run: vi -c ":set nobomb" -c ":wq" slides.md
+
       - name: Check file format
         run: file slides.md
 
