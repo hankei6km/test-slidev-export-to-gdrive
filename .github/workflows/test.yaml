@@ -57,9 +57,6 @@ jobs:
           dest_file_name: slides_recv.md
           dest_mime_type: text/plain
 
-      - name: Conver crlf to lf
-        run: tr -d "\r" < slides_recv.md > slides.md
-
       - name: Remove BOM
         run: vi -c ":set nobomb" -c ":wq" slides.md
 
