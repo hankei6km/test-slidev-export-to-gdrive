@@ -56,9 +56,7 @@ jobs:
           file_id: ${{ secrets.SLIDES_MD_FILE_ID }}
           dest_file_name: slides_recv.md
           dest_mime_type: text/plain
-
-      - name: Remove BOM
-        run: vi -c ":set nobomb" -c ":wq" slides.md
+          remove_bom: true
 
       - name: Check file format
         run: file slides.md
