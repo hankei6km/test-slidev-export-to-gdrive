@@ -20,4 +20,4 @@ jobs:
 
       - name: Parse event
         id: parse
-        run: cat "${GITHUB_EVENT_PATH}"
+        run: cat "${GITHUB_EVENT_PATH}" | jq -r .inputs
