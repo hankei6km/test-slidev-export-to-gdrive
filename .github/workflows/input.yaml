@@ -1,6 +1,11 @@
 name: input
 on:
   workflow_dispatch:
+    inputs:
+      text:
+        type: string
+        required: true
+        description: Text data
 
 jobs:
   alloc:
