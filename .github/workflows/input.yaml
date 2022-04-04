@@ -1,0 +1,18 @@
+name: input
+on:
+  workflow_dispatch:
+
+jobs:
+  alloc:
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Parse event
+        id: parse
+        run: cat "${GITHUB_EVENT_PATH}"
