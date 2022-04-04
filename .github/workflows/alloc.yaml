@@ -22,18 +22,20 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      - name: Send blank.pdf to Google drive
-        id: send
+      - name: Send dummy file to Google drive
+        id: send1
         uses: hankei6km/gdrive-act-send@v0.2.0
         with:
-          parent-id: ${{ secrets.PARENT_ID }}
-          dest-file-name: ${{ secrets.DEST_FILE_NAME }}
-          src-file-name: blank.pdf
+          parent_id: ${{ secrets.PARENT_ID }}
+          dest_file_name: ${{ secrets.DEST_FILE_NAME }}
+          src_file_name: blank.pdf
+          # サービスアカウントから一般アカウントの transfer_ownership は Google の mimeType が必要.
+          dest_mime_type: application/pdf
+          src_mime_type: text/plain
 
-      - name: Transfer Owner
+      - name: Share anyone
         uses: hankei6km/gdrive-act-share@v0.1.1
         with:
-          file_id: ${{ steps.send.outputs.file_id }}
-          type: user
-          role: owner
-          email_address: ${{ secrets.SHARE_EMAIL_ADDRESS }}
+          file_id: ${{ steps.send1.outputs.file_id }}
+          type: anyone
+          role: reader

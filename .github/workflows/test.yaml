@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install fonts
+        run: sudo apt-get install -y fonts-noto-cjk
+
       - uses: actions/checkout@v3
 
       - name: Use Node.js 16.xx
@@ -38,9 +41,6 @@ jobs:
       - name: Install additional modules for export
         run: npm install --save-dev playwright-chromium
 
-      - name: Export
-        run: npm run export
-
       - id: "auth"
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v0"
@@ -49,10 +49,27 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      - name: Send slides.pdf to Google drive
-        uses: hankei6km/gdrive-act-send@v0.1.1
+      - name: Recevie slides.md from Google drive
+        uses: hankei6km/gdrive-act-recv@v0
         with:
           # 外部から切り替えできるように secret にしてある.
-          parent-id: ${{ secrets.PARENT_ID }}
-          dest-file-name: ${{ secrets.DEST_FILE_NAME }}
-          src-file-name: ${{ secrets.SRC_FILE_NAME }}
+          file_id: ${{ secrets.SLIDES_MD_FILE_ID }}
+          dest_file_name: slides.md
+          # dest_mime_type: text/plain
+          # remove_bom: true
+
+      - name: Check file format
+        run: file slides.md
+
+      - name: Export
+        run: npm run export
+
+      - name: Send slides.pdf to Google drive
+        uses: hankei6km/gdrive-act-send@v0
+        with:
+          # 外部から切り替えできるように secret にしてある.
+          parent_id: ${{ secrets.PARENT_ID }}
+          dest_file_name: ${{ secrets.DEST_FILE_NAME }}
+          src_file_name: ${{ secrets.SRC_FILE_NAME }}
+          dest_mime_type: application/pdf
+          src_mime_type: application/pdf
