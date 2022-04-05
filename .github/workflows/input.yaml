@@ -70,3 +70,14 @@ jobs:
           src_file_name: ${{ secrets.SRC_FILE_NAME }}
           dest_mime_type: application/pdf
           src_mime_type: application/pdf
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
