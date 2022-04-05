@@ -10,7 +10,7 @@ on:
 jobs:
   alloc:
     permissions:
-      contents: "read"
+      contents: "write"
       id-token: "write"
 
     runs-on: ubuntu-latest
