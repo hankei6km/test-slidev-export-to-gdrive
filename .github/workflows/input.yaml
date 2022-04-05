@@ -72,7 +72,7 @@ jobs:
           src_mime_type: application/pdf
 
       - name: Build
-        run: npm run build --base /test-slidev-export-to-gdrive/
+        run: npm run build -- --base /test-slidev-export-to-gdrive/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
