@@ -2,6 +2,13 @@ name: input
 on:
   workflow_dispatch:
     inputs:
+      target:
+        type: choice
+            options:
+            - pages
+            - pdf
+        required: true
+        description: Target type
       slides:
         type: string
         required: true
@@ -20,7 +27,12 @@ jobs:
 
       - name: Parse event
         id: parse
-        run: cat "${GITHUB_EVENT_PATH}" | jq -r .inputs.slides > slides.md
+        run: |
+          echo -n '::set-output name=TARGET_TYPE::' > cmd.txt
+          cat "${GITHUB_EVENT_PATH}" | jq -r .inputs.target >> cmd.txt
+          cat cmd.txt
+          cat "${GITHUB_EVENT_PATH}" | jq -r .inputs.slides > slides.md
+          rm cmd.txt
 
       - name: Install fonts
         run: sudo apt-get install -y fonts-noto-cjk
@@ -48,9 +60,11 @@ jobs:
         run: npm install --save-dev playwright-chromium
 
       - name: Build
+        if:  ${{ steps.parse.outputs.TARGET_TYPE == 'pages' }} 
         run: npm run build -- --base /test-slidev-export-to-gdrive/
 
       - name: Deploy to GitHub Pages
+        if:  ${{ steps.parse.outputs.TARGET_TYPE == 'pages' }} 
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -58,13 +72,12 @@ jobs:
           publish_branch: gh-pages
           force_orphan: true
 
-      - name: Check file format
-        run: file slides.md
-
       - name: Export
+        if:  ${{ steps.parse.outputs.TARGET_TYPE == 'pdf' }} 
         run: npm run export
 
       - id: "auth"
+        if:  ${{ steps.parse.outputs.TARGET_TYPE == 'pdf' }} 
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v0"
         with:
@@ -73,6 +86,7 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
       - name: Send slides.pdf to Google drive
+        if:  ${{ steps.parse.outputs.TARGET_TYPE == 'pdf' }} 
         uses: hankei6km/gdrive-act-send@v0
         with:
           # 外部から切り替えできるように secret にしてある.
