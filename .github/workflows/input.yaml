@@ -32,9 +32,6 @@ jobs:
       - name: Parse event
         id: parse
         run: |
-          echo -n '::add-mask::' > cmd_mask.txt
-          jq < "${GITHUB_EVENT_PATH}" -r .inputs.file_id >> cmd_mask.txt
-          cat cmd_mask.txt
           echo -n '::set-output name=group_key::' > cmd_out.txt
           envsubst < <(echo "$SALT") > key.txt
           jq < "${GITHUB_EVENT_PATH}" -r .inputs.file_id >> key.txt
@@ -63,11 +60,21 @@ jobs:
       - name: Parse event
         id: parse
         run: |
+          echo -n '::add-mask::' > cmd_mask.txt
+          jq < "${GITHUB_EVENT_PATH}" -r .inputs.file_id >> cmd_mask.txt
+          cat cmd_mask.txt
+          rm cmd_mask.txt
           echo -n '::set-output name=TARGET_TYPE::' > cmd.txt
           jq < "${GITHUB_EVENT_PATH}"  -r .inputs.target >> cmd.txt
           cat cmd.txt
           jq < "${GITHUB_EVENT_PATH}"  -r .inputs.slides > slides.md
           rm cmd.txt
+
+      - name: Check
+        run: |
+          echo "${FILE_ID}"
+        env:
+          FILE_ID: ${{ needs.prep.outputs.file_id }}
 
       - name: Use Node.js 16.xx
         uses: actions/setup-node@v1
