@@ -48,7 +48,7 @@ jobs:
           echo "${FILE_ID}"
           echo "${GROUP_KEY}"
         env:
-          FILE_ID: github.event.inputs.file_id
+          FILE_ID: ${{ github.event.inputs.file_id }}
           GROUP_KEY: ${{ steps.parse.outputs.group_key }}
 
   deploy:
