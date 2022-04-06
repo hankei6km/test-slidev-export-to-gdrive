@@ -9,18 +9,60 @@ on:
           - pdf
         required: true
         description: Target type
+      file_id:
+        type: string
+        required: true
+        description: id of slide source for concurrency
       slides:
         type: string
         required: true
         description: Slide source
 
 jobs:
-  alloc:
+  prep:
+    permissions:
+      contents: "read"
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      group_key: ${{ steps.parse.outputs.group_key }}
+
+    steps:
+      - name: Parse event
+        id: parse
+        run: |
+          echo -n '::add-mask::' > cmd_mask.txt
+          jq < "${GITHUB_EVENT_PATH}" -r .inputs.file_id >> cmd_mask.txt
+          cat cmd_mask.txt
+          echo -n '::set-output name=group_key::' > cmd_out.txt
+          envsubst < <(echo "$SALT") > key.txt
+          jq < "${GITHUB_EVENT_PATH}" -r .inputs.file_id >> key.txt
+          sha256sum < key.txt >> cmd_out.txt
+          cat cmd_out.txt
+          rm cmd_out.txt
+        env:
+          SALT: ${{ secrets.SALT }}
+      - name: check
+        run: |
+          echo "${FILE_ID}"
+          echo "${GROUP_KEY}"
+        env:
+          FILE_ID: github.event.inputs.file_id
+          GROUP_KEY: ${{ steps.parse.outputs.group_key }}
+
+  deploy:
     permissions:
       contents: "write"
       id-token: "write"
 
     runs-on: ubuntu-latest
+
+    needs: [prep]
+
+    concurrency:
+      group: ${{ needs.prep.outputs.group_key }}
+      cancel-in-progress: true
 
     steps:
       - uses: actions/checkout@v3
@@ -29,9 +71,9 @@ jobs:
         id: parse
         run: |
           echo -n '::set-output name=TARGET_TYPE::' > cmd.txt
-          cat "${GITHUB_EVENT_PATH}" | jq -r .inputs.target >> cmd.txt
+          jq < "${GITHUB_EVENT_PATH}"  -r .inputs.target >> cmd.txt
           cat cmd.txt
-          cat "${GITHUB_EVENT_PATH}" | jq -r .inputs.slides > slides.md
+          jq < "${GITHUB_EVENT_PATH}"  -r .inputs.slides > slides.md
           rm cmd.txt
 
       - name: Use Node.js 16.xx
