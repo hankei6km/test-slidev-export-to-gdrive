@@ -70,12 +70,6 @@ jobs:
           jq < "${GITHUB_EVENT_PATH}"  -r .inputs.slides > slides.md
           rm cmd.txt
 
-      - name: Check
-        run: |
-          echo "${FILE_ID}"
-        env:
-          FILE_ID: ${{ github.event.inputs.file_id }}
-
       - name: Use Node.js 16.xx
         uses: actions/setup-node@v1
         with:
