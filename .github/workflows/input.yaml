@@ -43,13 +43,6 @@ jobs:
           rm cmd_out.txt
         env:
           SALT: ${{ secrets.SALT }}
-      - name: check
-        run: |
-          echo "${FILE_ID}"
-          echo "${GROUP_KEY}"
-        env:
-          FILE_ID: ${{ github.event.inputs.file_id }}
-          GROUP_KEY: ${{ steps.parse.outputs.group_key }}
 
   deploy:
     permissions:
