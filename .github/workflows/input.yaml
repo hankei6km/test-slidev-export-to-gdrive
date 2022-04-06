@@ -74,7 +74,7 @@ jobs:
         run: |
           echo "${FILE_ID}"
         env:
-          FILE_ID: ${{ needs.prep.outputs.file_id }}
+          FILE_ID: ${{ github.event.inputs.file_id }}
 
       - name: Use Node.js 16.xx
         uses: actions/setup-node@v1
