@@ -34,9 +34,6 @@ jobs:
           cat "${GITHUB_EVENT_PATH}" | jq -r .inputs.slides > slides.md
           rm cmd.txt
 
-      - name: Install fonts
-        run: sudo apt-get install -y fonts-noto-cjk
-
       - name: Use Node.js 16.xx
         uses: actions/setup-node@v1
         with:
@@ -56,9 +53,6 @@ jobs:
       - name: Install modules
         run: npm ci
 
-      - name: Install additional modules for export
-        run: npm install --save-dev playwright-chromium
-
       - name: Build
         if: ${{ steps.parse.outputs.TARGET_TYPE == 'pages' }}
         run: npm run build -- --base /test-slidev-export-to-gdrive/
@@ -71,6 +65,12 @@ jobs:
           publish_dir: ./dist
           publish_branch: gh-pages
           force_orphan: true
+
+      - name: Install fonts and additional modules for exports
+        if: ${{ steps.parse.outputs.TARGET_TYPE == 'pdf' }}
+        run: |
+          sudo apt-get install -y fonts-noto-cjk
+          npm install --save-dev playwright-chromium
 
       - name: Export
         if: ${{ steps.parse.outputs.TARGET_TYPE == 'pdf' }}
